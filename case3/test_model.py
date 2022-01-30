@@ -15,7 +15,7 @@ def download_model(doi):
 
 
 def test_hpa_model():
-    doi = "10.5281/zenodo.5910855"
+    doi = "10.5281/zenodo.5911832"
     model_path = download_model(doi)
     # run prediction for the model with some random input
     model = bioimageio.core.load_resource_description(model_path)
@@ -23,6 +23,7 @@ def test_hpa_model():
         input_ = np.random.rand(1, 4, 128, 128).astype("float32")
         input_ = DataArray(input_, dims=tuple("bcyx"))
         pred = pp(input_)[0].values
+    print("Predicted scores shape:", pred.shape)
     print("Predicted scores:", pred)
 
 
