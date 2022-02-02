@@ -20,7 +20,12 @@ Integration with the multicut workflow enables cell segmentation based on the bo
 
 TODO:
 - need ilastik release/beta with tensorflow
-- use the segmentations corrected with ilastik multicut to finetune the network via zero-cost? (Would need to have the unet3d notebook updated so that it can reimport a model from bioimage.io)
+
+## Retraining in zero-cose 
+
+- use the segmentations corrected with ilastik multicut to finetune the network via zero-cost 
+- TODO need to have the unet3d notebook updated so that it can reimport a model from bioimage.io)
+
 
 ## Application in deepimageJ
 
