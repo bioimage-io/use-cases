@@ -177,28 +177,53 @@ def predict_classes(image_paths, segmentation_paths, tmp_dir, model_doi):
     return prediction_paths
 
 
+# adding text to shapes:
+# https://github.com/napari/napari/blob/6a3e11aa717e7928a0a5a3c7693577729a466ef1/examples/add_shapes_with_text.py
 def visualize_results(image_paths, segmentation_paths, prediction_paths):
+    reverse_class_dict = {v: k for k, v in HPA_CLASSES.items()}
 
-    # TODO visualize the prediction, ideally with a text overlay for the predicted class
     def visualize(image, segmentation, pred, title):
         segments = regionprops(segmentation)
         bounding_boxes = []
+        classes = []
+        likelihoods = []
         for seg in segments:
             scores = pred[seg.label]
             if scores is None:
                 continue
             xmin, ymin, xmax, ymax = seg.bbox
-            bounding_boxes.append(
-                np.array([
-                    [xmin, ymin], [xmax, ymax]
-                ])
-            )
+            bounding_boxes.append(np.array([[xmin, ymin], [xmax, ymax]]))
+            # apply softmax to find the class probabilities and the most likely class
+            scores = scores.squeeze()
+            scores = np.exp(scores) / np.sum(np.exp(scores))
+            # most likely class
+            class_id = np.argmax(scores)
+            class_name = reverse_class_dict[class_id]
+            classes.append(class_name)
+            likelihoods.append(scores[np.argmax(scores)])
+
+        properties = {
+            "likelihood": likelihoods,
+            "class": classes
+        }
+        text_properties = {
+            "text": "{class}: {likelihood:0.2f}",
+            "anchor": "upper_left",
+            "translation": [-5, 0],
+            "size": 16,
+            "color": "red"
+        }
 
         v = napari.Viewer()
         v.add_image(image)
         v.add_labels(segmentation)
-        v.add_shapes(bounding_boxes, shape_type="rectangle", edge_width=5,
-                     edge_color="coral", face_color="royalblue")
+        v.add_shapes(bounding_boxes,
+                     properties=properties,
+                     text=text_properties,
+                     shape_type="rectangle",
+                     edge_width=4,
+                     edge_color="coral",
+                     face_color="transparent")
         v.title = title
         napari.run()
 
