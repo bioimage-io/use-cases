@@ -10,7 +10,11 @@ import napari
 import numpy as np
 import pandas as pd
 import requests
-from skimage.measure import regionprops
+import scipy.ndimage.morphology as morphology
+
+from bioimageio.core.prediction import predict_with_tiling
+from skimage.measure import regionprops, label
+from skimage.segmentation import watershed
 from xarray import DataArray
 from tqdm import tqdm
 
@@ -105,25 +109,55 @@ def load_model(doi, tmp_dir):
 def segment_images(image_paths, tmp_dir, model_doi):
     seg_paths = {}
 
+    model = bioimageio.core.load_resource_description(model_doi)
+    axes = model.inputs[0].axes
+
     # TODO implement the segmentation with the proper model
     # (for now I have used cellpose in a different script)
-    def _segment():
-        pass
+    def _segment(pp, path, out_path):
+        channels = [imageio.imread(path)[None] for path in im_path]
+        image = np.concatenate(channels, axis=0)
+        input_ = DataArray(image[None], dims=axes)
+        tiling = {"tile": {"x": 1024, "y": 1024}, "halo": {"x": 64, "y": 64}}
 
-    for cls_name, im_paths in image_paths.items():
-        cls_seg_paths = []
-        for im_path in im_paths:
-            # TODO which image channel do we need? or all of them?
-            # here I talk green
-            im_root, im_name = im_path[1].split("/")[-2:]
-            seg_folder = os.path.join(tmp_dir, "segmentations", im_root)
-            os.makedirs(seg_folder, exist_ok=True)
-            seg_path = os.path.join(seg_folder, im_name)
-            cls_seg_paths.append(seg_path)
-            if os.path.exists(seg_path):
-                continue
-            _segment()
-        seg_paths[cls_name] = cls_seg_paths
+        pred = predict_with_tiling(pp, input_, tiling=tiling, verbose=True)[0].values[0]
+        foreground, boundaries = pred[0], pred[1]
+
+        boundary_weight = 10
+        seeds = label((foreground - boundary_weight * boundaries) > 0.9)
+        fg_mask = foreground > 0.5
+
+        # compute seeds and get rid of small stuff
+        seed_ids, seed_sizes = np.unique(seeds, return_counts=True)
+        min_seed_size = 500
+        filter_seeds = seed_ids[seed_sizes < min_seed_size]
+        seeds[np.isin(seeds, filter_seeds)] = 0
+
+        # get final segmentation with watershed
+        seg = watershed(boundaries, markers=seeds, mask=fg_mask)
+        imageio.imwrite(out_path, seg)
+
+        # v = napari.Viewer()
+        # v.add_image(image)
+        # v.add_image(pred)
+        # v.add_image(fg_mask)
+        # v.add_labels(seeds)
+        # napari.run()
+        # quit()
+
+    with bioimageio.core.create_prediction_pipeline(bioimageio_model=model) as pp:
+        for cls_name, im_paths in image_paths.items():
+            cls_seg_paths = []
+            for im_path in im_paths:
+                im_root, im_name = im_path[0].split("/")[-2:]
+                seg_folder = os.path.join(tmp_dir, "segmentations", im_root)
+                os.makedirs(seg_folder, exist_ok=True)
+                seg_path = os.path.join(seg_folder, im_name)
+                cls_seg_paths.append(seg_path)
+                if os.path.exists(seg_path):
+                    continue
+                _segment(pp, im_path, seg_path)
+            seg_paths[cls_name] = cls_seg_paths
 
     return seg_paths
 
@@ -253,7 +287,7 @@ def main():
     os.makedirs(args.tmp_dir, exist_ok=True)
     image_paths = download_data(args.input, args.tmp_dir, args.images_per_class)
     # TODO add this to CLI
-    seg_doi = ""
+    seg_doi = "./hpa_tmp/HPACellSegmentationBoundaryModel.zip"
     seg_paths = segment_images(image_paths, args.tmp_dir, seg_doi)
     prediction_paths = predict_classes(image_paths, seg_paths, args.tmp_dir, args.model_doi)
     visualize_results(image_paths, seg_paths, prediction_paths)
