@@ -33,12 +33,12 @@ def make_test_input():
         channels.append(imageio.imread(out_path))
 
     image = np.stack(
-        [channels[0], channels[3], channels[2]]
+        [channels[0], channels[3], channels[2]]  # red, blue, green
     )
     target_shape = (3, 512, 512)
     image = resize(image, target_shape)
     image = image[None].astype("float32")
-    np.save("./test_input_new.npy", image)
+    np.save("./test_cell_input.npy", image)
     return image
 
 
@@ -65,7 +65,7 @@ def make_test_data():
     # save the output
     pred = pred.detach().cpu().numpy()
     print(pred.shape)
-    np.save("./test_output_new.npy", pred)
+    np.save("./test_cell_output.npy", pred)
 
 
 if __name__ == "__main__":

@@ -27,5 +27,6 @@ build_model(
             "std": [0.23482446870963955, 0.23482446870963955, 0.23482446870963955],
         }
     }],
-    weight_type="torchscript"
+    weight_type="torchscript",
+    add_deepimagej_config=True
 )

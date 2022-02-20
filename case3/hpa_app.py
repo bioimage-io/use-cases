@@ -10,11 +10,11 @@ import napari
 import numpy as np
 import pandas as pd
 import requests
-import scipy.ndimage.morphology as morphology
 
-from bioimageio.core.prediction import predict_with_tiling
+from bioimageio.core.prediction import predict_with_padding
 from skimage.measure import regionprops, label
 from skimage.segmentation import watershed
+from skimage.transform import rescale
 from xarray import DataArray
 from tqdm import tqdm
 
@@ -106,58 +106,85 @@ def load_model(doi, tmp_dir):
     return bioimageio.core.load_resource_description(out_path)
 
 
-def segment_images(image_paths, tmp_dir, model_doi):
+def load_image(image_paths, channels, scale_factor=None):
+    image = []
+    for chan in channels:
+        path = [imp for imp in image_paths if chan in imp]
+        assert len(path) == 1, f"{chan}: {path}"
+        path = path[0]
+        im = imageio.imread(path)
+        if scale_factor is not None:
+            im = rescale(im, scale_factor)
+        image.append(im[None])
+    image = np.concatenate(image, axis=0)
+    return image
+
+
+def segment_images(image_paths, tmp_dir, cell_model, nucleus_model):
     seg_paths = {}
 
-    model = bioimageio.core.load_resource_description(model_doi)
-    axes = model.inputs[0].axes
+    # TODO download fully instead of load
+    cell_model = bioimageio.core.load_resource_description(cell_model)
+    nucleus_model = bioimageio.core.load_resource_description(nucleus_model)
 
-    # TODO implement the segmentation with the proper model
-    # (for now I have used cellpose in a different script)
-    def _segment(pp, path, out_path):
-        channels = [imageio.imread(path)[None] for path in im_path]
-        image = np.concatenate(channels, axis=0)
-        input_ = DataArray(image[None], dims=axes)
-        tiling = {"tile": {"x": 1024, "y": 1024}, "halo": {"x": 64, "y": 64}}
+    axes = cell_model.inputs[0].axes
+    channels = ["red", "blue", "green"]
+    padding = {"x": 32, "y": 32}
+    scale_factor = 0.25
 
-        pred = predict_with_tiling(pp, input_, tiling=tiling, verbose=True)[0].values[0]
-        foreground, boundaries = pred[0], pred[1]
+    def _segment(pp_cell, pp_nucleus, im_path, out_path):
+        image = load_image(im_path, channels, scale_factor=scale_factor)
 
-        boundary_weight = 10
-        seeds = label((foreground - boundary_weight * boundaries) > 0.9)
-        fg_mask = foreground > 0.5
+        # run prediction with the nucleus model
+        # TODO the inputs might change for the HPA nucleus model
+        input_nucleus = DataArray(image[1:2][None], dims=axes)
+        nucleus_pred = predict_with_padding(pp_nucleus, input_nucleus, padding=padding)[0].values[0]
 
-        # compute seeds and get rid of small stuff
-        seed_ids, seed_sizes = np.unique(seeds, return_counts=True)
-        min_seed_size = 500
-        filter_seeds = seed_ids[seed_sizes < min_seed_size]
-        seeds[np.isin(seeds, filter_seeds)] = 0
+        # segment the nuclei in order to use them as seeds for the cell segmentation
+        threshold = 0.5
+        min_size = 250
+        # TODO the outputs might change for the HPA nucleus model
+        fg, bd = nucleus_pred[0], nucleus_pred[1]
+        cc = label(fg - bd > threshold)
+        # apply a size filter to the nucleus segmentation
+        ids, sizes = np.unique(cc, return_counts=True)
+        # don't apply size filter on the border
+        border = np.ones_like(cc).astype("bool")
+        border[1:-1, 1:-1] = 0
+        filter_ids = ids[sizes < min_size]
+        border_ids = cc[border]
+        filter_ids = np.setdiff1d(filter_ids, border_ids)
+        cc[np.isin(cc, filter_ids)] = 0
+        nuclei = watershed(bd, markers=cc, mask=fg > threshold)
 
-        # get final segmentation with watershed
-        seg = watershed(boundaries, markers=seeds, mask=fg_mask)
-        imageio.imwrite(out_path, seg)
+        # run prediction with the cell segmentation model
+        input_cells = DataArray(image[None], dims=axes)
+        cell_pred = predict_with_padding(pp_cell, input_cells, padding=padding)[0].values[0]
+        # segment the cells
+        threshold = 0.5
+        fg, bd = cell_pred[2], cell_pred[1]
+        cell_seg = watershed(bd, markers=nuclei, mask=fg > threshold)
 
-        # v = napari.Viewer()
-        # v.add_image(image)
-        # v.add_image(pred)
-        # v.add_image(fg_mask)
-        # v.add_labels(seeds)
-        # napari.run()
-        # quit()
+        # bring back to the orignial scale
+        cell_seg = rescale(
+            cell_seg, 1.0 / scale_factor, order=0, preserve_range=True, anti_aliasing=False
+        ).astype(cell_seg.dtype)
+        imageio.imwrite(out_path, cell_seg)
 
-    with bioimageio.core.create_prediction_pipeline(bioimageio_model=model) as pp:
-        for cls_name, im_paths in image_paths.items():
-            cls_seg_paths = []
-            for im_path in im_paths:
-                im_root, im_name = im_path[0].split("/")[-2:]
-                seg_folder = os.path.join(tmp_dir, "segmentations", im_root)
-                os.makedirs(seg_folder, exist_ok=True)
-                seg_path = os.path.join(seg_folder, im_name)
-                cls_seg_paths.append(seg_path)
-                if os.path.exists(seg_path):
-                    continue
-                _segment(pp, im_path, seg_path)
-            seg_paths[cls_name] = cls_seg_paths
+    with bioimageio.core.create_prediction_pipeline(bioimageio_model=cell_model) as pp_cell:
+        with bioimageio.core.create_prediction_pipeline(bioimageio_model=nucleus_model) as pp_nucleus:
+            for cls_name, im_paths in tqdm(image_paths.items(), desc="Segment images", total=len(image_paths)):
+                cls_seg_paths = []
+                for im_path in im_paths:
+                    im_root, im_name = im_path[0].split("/")[-2:]
+                    seg_folder = os.path.join(tmp_dir, "segmentations", im_root)
+                    os.makedirs(seg_folder, exist_ok=True)
+                    seg_path = os.path.join(seg_folder, im_name)
+                    cls_seg_paths.append(seg_path)
+                    if os.path.exists(seg_path):
+                        continue
+                    _segment(pp_cell, pp_nucleus, im_path, seg_path)
+                seg_paths[cls_name] = cls_seg_paths
 
     return seg_paths
 
@@ -165,15 +192,15 @@ def segment_images(image_paths, tmp_dir, model_doi):
 def predict_classes(image_paths, segmentation_paths, tmp_dir, model_doi):
     model = load_model(model_doi, tmp_dir)
     axes = model.inputs[0].axes
-    input_shape = model.inputs[0].shape
+    # input_shape = model.inputs[0].shape
     min_bb_size = 32
+    channels = ["red", "green", "blue", "yellow"]
 
     def _classifiy(pp, im_path, seg_path, out_path):
-        channels = [imageio.imread(path)[None] for path in im_path]
-        assert len(channels) == input_shape[1], f"{len(channels)}, {input_shape[1]}"
-        image = np.concatenate(channels, axis=0)
+        image = load_image(im_path, channels)
         assert os.path.exists(seg_path), seg_path
         seg = imageio.imread(seg_path)
+        assert seg.shape == image.shape[1:]
         segments = regionprops(seg)
         predictions = {}
         for seg in tqdm(segments, desc=f"Classify {len(segments)} cells"):
@@ -192,7 +219,6 @@ def predict_classes(image_paths, segmentation_paths, tmp_dir, model_doi):
             pickle.dump(predictions, f)
 
     prediction_paths = {}
-    # TODO device handling
     with bioimageio.core.create_prediction_pipeline(bioimageio_model=model) as pp:
         for cls_name, im_paths in image_paths.items():
             seg_paths = segmentation_paths[cls_name]
@@ -273,23 +299,28 @@ def visualize_results(image_paths, segmentation_paths, prediction_paths):
             visualize(image, seg, pred, title=f"{cls_name}:{os.path.basename(seg_path)}")
 
 
-# TODO device handling
 # https://www.kaggle.com/lnhtrang/hpa-public-data-download-and-hpacellseg
 def main():
     description = "Example python app for class prediction of HPA images with a bioimage.io model."
     parser = argparse.ArgumentParser(description=description)
+    # input and output data
     parser.add_argument("-i", "--input", default="./kaggle_2021.csv", help="")
     parser.add_argument("-d", "--tmp_dir", default="hpa_tmp")
-    parser.add_argument("-m", "--model_doi", default="10.5281/zenodo.5911832")
-    parser.add_argument("-n", "--images_per_class", default=1, help="")
+    # the models used for segmentation and classification
+    # TODO this is a generic model trained on dsb, do we want to take the orignial HPA model?
+    parser.add_argument("-n", "--nucleus_segmentation_model", default="10.5281/zenodo.5764892")
+    # TODO get from model zoo
+    parser.add_argument("-s", "--cell_segmentation_model", default="cell_seg_model_export/cell_model.zip")
+    parser.add_argument("-c", "--classification_model", default="10.5281/zenodo.5911832")
+    # misc options
+    parser.add_argument("--images_per_class", default=1, help="")
     args = parser.parse_args()
 
     os.makedirs(args.tmp_dir, exist_ok=True)
     image_paths = download_data(args.input, args.tmp_dir, args.images_per_class)
-    # TODO add this to CLI
-    seg_doi = "./hpa_tmp/HPACellSegmentationBoundaryModel.zip"
-    seg_paths = segment_images(image_paths, args.tmp_dir, seg_doi)
-    prediction_paths = predict_classes(image_paths, seg_paths, args.tmp_dir, args.model_doi)
+    seg_paths = segment_images(image_paths, args.tmp_dir,
+                               args.cell_segmentation_model, args.nucleus_segmentation_model)
+    prediction_paths = predict_classes(image_paths, seg_paths, args.tmp_dir, args.classification_model)
     visualize_results(image_paths, seg_paths, prediction_paths)
     # TODO add some analysis / validation code
 
