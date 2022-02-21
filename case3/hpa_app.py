@@ -318,7 +318,11 @@ def visualize_results(image_paths, segmentation_paths, prediction_paths):
             visualize(image, seg, pred, title=f"{cls_name}:{os.path.basename(seg_path)}")
 
 
+# the code is based on:
 # https://www.kaggle.com/lnhtrang/hpa-public-data-download-and-hpacellseg
+# https://github.com/CellProfiling/HPA-Cell-Segmentation/blob/master/hpacellseg/cellsegmentator.py
+# https://github.com/CellProfiling/HPA-Cell-Segmentation/blob/master/hpacellseg/utils.py
+# https://github.com/oeway/hpa-bestfitting-inceptionv3/blob/master/simple_predict.py
 def main():
     description = "Example python app for class prediction of HPA images with a bioimage.io model."
     parser = argparse.ArgumentParser(description=description)
