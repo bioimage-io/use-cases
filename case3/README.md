@@ -12,8 +12,8 @@ The `hpa_app.py` scrips loads data from the hpa website, runs cell segmentation 
 To this end it makes use of the python [bioimageio.core](ihttps://github.com/bioimage-io/core-bioimage-io-python) library that allows to integrate bioimageio models into any python application.
 It uses [napari](https://github.com/napari/napari) to visualize the segmentation and classification results. See the results or two images, one with nucleoplasm staining, the other with microtubulus staining below.
 
-<img src="images/hpa_nucleoplasm.png" alt="drawing" width="800"/>
-<img src="images/hpa_microtubules.png" alt="drawing" width="800"/>
+<img src="images/hpa_nucleoplasm.png" alt="drawing" width="1200"/>
+<img src="images/hpa_microtubules.png" alt="drawing" width="1200"/>
 
 ## Usage in imjoy / bioengine
 
