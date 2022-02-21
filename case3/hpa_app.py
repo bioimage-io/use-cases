@@ -14,7 +14,7 @@ import requests
 from bioimageio.core.prediction import predict_with_padding
 from skimage.measure import regionprops, label
 from skimage.segmentation import watershed
-from skimage.transform import rescale
+from skimage.transform import rescale, resize
 from xarray import DataArray
 from tqdm import tqdm
 
@@ -191,35 +191,55 @@ def segment_images(image_paths, tmp_dir, cell_model, nucleus_model):
 def predict_classes(image_paths, segmentation_paths, tmp_dir, model_doi):
     model = load_model(model_doi, tmp_dir)
     axes = model.inputs[0].axes
-    # input_shape = model.inputs[0].shape
-    min_bb_size = 32
+    expected_shape = model.inputs[0].shape[1:]
     channels = ["red", "green", "blue", "yellow"]
 
     def _classifiy(pp, im_path, seg_path, out_path):
         image = load_image(im_path, channels)
         assert os.path.exists(seg_path), seg_path
-        seg = imageio.imread(seg_path)
-        assert seg.shape == image.shape[1:]
-        segments = regionprops(seg)
-        predictions = {}
-        for seg in tqdm(segments, desc=f"Classify {len(segments)} cells"):
+        segmentation = imageio.imread(seg_path)
+        assert segmentation.shape == image.shape[1:]
+        segments = regionprops(segmentation)
+
+        seg_ids = []
+        seg_images = []
+        for seg in segments:
             seg_id = seg.label
+            bb = np.s_[seg.bbox[0]:seg.bbox[2], seg.bbox[1]:seg.bbox[3]]
 
-            bb = seg.bbox
-            if bb[2] - bb[0] < min_bb_size or bb[3] - bb[1] < min_bb_size:
-                predictions[seg_id] = None
-                continue
+            im = image[(slice(None),) + bb]
+            mask = segmentation[bb] != seg_id
+            for c in range(im.shape[0]):
+                im[c][mask] = 0
+            im = resize(im, expected_shape)
+            # after resize the value range is in [0, 1], but the model expects a value range of [0, 255]
+            # note that we could also use 'resize(..., preserve_range=True)', but we might also get other input ranges
+            # and this way we can make sure that the value range for the model is [0, 255]
+            im *= 255
 
-            # TODO do we need to resize the input of the network? Then we could also batch...
-            input_ = DataArray(image[:, bb[0]:bb[2], bb[1]:bb[3]][None], dims=axes)
-            pred = pp(input_)[0].values
-            predictions[seg_id] = pred
+            # for debugging
+            # v = napari.Viewer()
+            # v.add_image(im)
+            # mask = resize(mask, expected_shape[1:], order=0, anti_aliasing=False, preserve_range=True)
+            # v.add_labels(np.logical_not(mask), name="cell_mask")
+            # napari.run()
+
+            seg_ids.append(seg_id)
+            seg_images.append(im[None])
+
+        input_ = DataArray(
+            np.concatenate(seg_images, axis=0), dims=axes
+        )
+        preds = pp(input_)[0].values
+        assert preds.shape[0] == len(seg_ids)
+        predictions = {seg_id: pred for seg_id, pred in zip(seg_ids, preds)}
+
         with open(out_path, "wb") as f:
             pickle.dump(predictions, f)
 
     prediction_paths = {}
     with bioimageio.core.create_prediction_pipeline(bioimageio_model=model) as pp:
-        for cls_name, im_paths in image_paths.items():
+        for cls_name, im_paths in tqdm(image_paths.items(), total=len(image_paths), desc="Classify cells"):
             seg_paths = segmentation_paths[cls_name]
             assert len(seg_paths) == len(im_paths)
             cls_pred_paths = []
