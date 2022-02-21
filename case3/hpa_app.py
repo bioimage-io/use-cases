@@ -136,26 +136,25 @@ def segment_images(image_paths, tmp_dir, cell_model, nucleus_model):
         image = load_image(im_path, channels, scale_factor=scale_factor)
 
         # run prediction with the nucleus model
-        # TODO the inputs might change for the HPA nucleus model
-        input_nucleus = DataArray(image[1:2][None], dims=axes)
-        nucleus_pred = predict_with_padding(pp_nucleus, input_nucleus, padding=padding)[0].values[0]
+        input_nucleus = DataArray(
+            np.concatenate([image[1:2], image[1:2], image[1:2]], axis=0)[None],
+            dims=axes
+        )
+        nuclei_pred = predict_with_padding(pp_nucleus, input_nucleus, padding=padding)[0].values[0]
 
         # segment the nuclei in order to use them as seeds for the cell segmentation
         threshold = 0.5
         min_size = 250
-        # TODO the outputs might change for the HPA nucleus model
-        fg, bd = nucleus_pred[0], nucleus_pred[1]
-        cc = label(fg - bd > threshold)
-        # apply a size filter to the nucleus segmentation
-        ids, sizes = np.unique(cc, return_counts=True)
+        fg = nuclei_pred[-1]
+        nuclei = label(fg > threshold)
+        ids, sizes = np.unique(nuclei, return_counts=True)
         # don't apply size filter on the border
-        border = np.ones_like(cc).astype("bool")
+        border = np.ones_like(nuclei).astype("bool")
         border[1:-1, 1:-1] = 0
         filter_ids = ids[sizes < min_size]
-        border_ids = cc[border]
+        border_ids = nuclei[border]
         filter_ids = np.setdiff1d(filter_ids, border_ids)
-        cc[np.isin(cc, filter_ids)] = 0
-        nuclei = watershed(bd, markers=cc, mask=fg > threshold)
+        nuclei[np.isin(nuclei, filter_ids)] = 0
 
         # run prediction with the cell segmentation model
         input_cells = DataArray(image[None], dims=axes)
@@ -307,10 +306,10 @@ def main():
     parser.add_argument("-i", "--input", default="./kaggle_2021.csv", help="")
     parser.add_argument("-d", "--tmp_dir", default="hpa_tmp")
     # the models used for segmentation and classification
-    # TODO this is a generic model trained on dsb, do we want to take the orignial HPA model?
-    parser.add_argument("-n", "--nucleus_segmentation_model", default="10.5281/zenodo.5764892")
     # TODO get from model zoo
-    parser.add_argument("-s", "--cell_segmentation_model", default="cell_seg_model_export/cell_model.zip")
+    parser.add_argument("-n", "--nucleus_segmentation_model", default="model_export/nuc_model.zip")
+    # TODO get from model zoo
+    parser.add_argument("-s", "--cell_segmentation_model", default="model_export/cell_model.zip")
     parser.add_argument("-c", "--classification_model", default="10.5281/zenodo.5911832")
     # misc options
     parser.add_argument("--images_per_class", default=1, help="")
