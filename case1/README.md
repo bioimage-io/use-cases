@@ -14,8 +14,10 @@ TODO describe training in zerocost
     - Load the model
     - Check the prediction
     - Export the prediction
+- Create 4 smaller crops of the data and prediction for the multicut workflow with `cutouts_for_multicut.py`
 - ilastik multicut workflow ([unet-segmentation.ilp](TODO upload somewhere else, this is too large for GH))
     - Load the data and predictions
+    - 
 
 Integration with the multicut workflow enables cell segmentation based on the boundary predictions and allows to correct errors in the network prediction (that happen because of application to a different data modality) to be fixed by training an edge classifier.
 See the screenshots below for prediction and multicut results in ilastik.
