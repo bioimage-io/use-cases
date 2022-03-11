@@ -15,6 +15,7 @@ from bioimageio.core.prediction import predict_with_padding
 from skimage.measure import regionprops, label
 from skimage.segmentation import watershed
 from skimage.transform import rescale, resize
+from sklearn.metrics import accuracy_score
 from xarray import DataArray
 from tqdm import tqdm
 
@@ -123,9 +124,8 @@ def load_image(image_paths, channels, scale_factor=None):
 def segment_images(image_paths, tmp_dir, cell_model, nucleus_model):
     seg_paths = {}
 
-    # TODO download fully instead of load
-    cell_model = bioimageio.core.load_resource_description(cell_model)
-    nucleus_model = bioimageio.core.load_resource_description(nucleus_model)
+    cell_model = load_model(cell_model, tmp_dir)
+    nucleus_model = load_model(nucleus_model, tmp_dir)
 
     axes = cell_model.inputs[0].axes
     channels = ["red", "blue", "green"]
@@ -318,6 +318,36 @@ def visualize_results(image_paths, segmentation_paths, prediction_paths):
             visualize(image, seg, pred, title=f"{cls_name}:{os.path.basename(seg_path)}")
 
 
+# TODO show this as a confusion matrix instead
+def analyze_results(prediction_paths):
+    all_predictions = []
+    all_expected = []
+    for cls, pred_paths in prediction_paths.items():
+        predictions = []
+        for pred_path in pred_paths:
+            with open(pred_path, "rb") as f:
+                this_scores = pickle.load(f)
+            for scores in this_scores.values():
+                scores = scores.squeeze()
+                scores = np.exp(scores) / np.sum(np.exp(scores))
+                # most likely class
+                class_id = np.argmax(scores)
+                predictions.append(class_id)
+
+        expected_id = HPA_CLASSES[cls]
+        expected = len(predictions) * [expected_id]
+        acc = accuracy_score(expected, predictions)
+        print("Prediction accuracy for", cls)
+        print(acc)
+
+        all_predictions.extend(predictions)
+        all_expected.extend(expected)
+
+    acc = accuracy_score(all_expected, all_predictions)
+    print("Overall accuracy:")
+    print(acc)
+
+
 # the code is based on:
 # https://www.kaggle.com/lnhtrang/hpa-public-data-download-and-hpacellseg
 # https://github.com/CellProfiling/HPA-Cell-Segmentation/blob/master/hpacellseg/cellsegmentator.py
@@ -326,26 +356,29 @@ def visualize_results(image_paths, segmentation_paths, prediction_paths):
 def main():
     description = "Example python app for class prediction of HPA images with a bioimage.io model."
     parser = argparse.ArgumentParser(description=description)
+
     # input and output data
     parser.add_argument("-i", "--input", default="./kaggle_2021.csv", help="")
     parser.add_argument("-d", "--tmp_dir", default="hpa_tmp")
+
     # the models used for segmentation and classification
-    # TODO get from model zoo
-    parser.add_argument("-n", "--nucleus_segmentation_model", default="model_export/nuc_model.zip")
-    # TODO get from model zoo
-    parser.add_argument("-s", "--cell_segmentation_model", default="model_export/cell_model.zip")
+    parser.add_argument("-n", "--nucleus_segmentation_model", default="10.5281/zenodo.6200999")
+    parser.add_argument("-s", "--cell_segmentation_model", default="10.5281/zenodo.6200635")
     parser.add_argument("-c", "--classification_model", default="10.5281/zenodo.5911832")
+
     # misc options
     parser.add_argument("--images_per_class", default=1, help="")
-    args = parser.parse_args()
+    parser.add_argument("-v", "--visualize", default=0, help="Whether to visualize the results")
 
+    args = parser.parse_args()
     os.makedirs(args.tmp_dir, exist_ok=True)
     image_paths = download_data(args.input, args.tmp_dir, args.images_per_class)
     seg_paths = segment_images(image_paths, args.tmp_dir,
                                args.cell_segmentation_model, args.nucleus_segmentation_model)
     prediction_paths = predict_classes(image_paths, seg_paths, args.tmp_dir, args.classification_model)
-    visualize_results(image_paths, seg_paths, prediction_paths)
-    # TODO add some analysis / validation code
+    if bool(args.visualize):
+        visualize_results(image_paths, seg_paths, prediction_paths)
+    analyze_results(prediction_paths)
 
 
 if __name__ == "__main__":
