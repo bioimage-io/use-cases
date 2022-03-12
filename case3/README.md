@@ -2,7 +2,7 @@
 
 This use-case wraps the best performing approach of the [Kaggle Human Protein Atlas - Single Cell Classiication Challenge](https://www.kaggle.com/c/hpa-single-cell-image-classification).
 It first segments the cells in the images using [a model for cell segmentation](https://bioimage.io/#/?id=10.5281%2Fzenodo.6200635) that predicts cell foreground and boundaries as input for a seeded watershed, with seeds from a [separate model for nucleus segmentation](https://bioimage.io/#/?id=10.5281%2Fzenodo.6200999).
-The model 10.5281/zenodo.5910855 (not on the website yet, PR: https://github.com/bioimage-io/collection-bioimage-io/pull/300) then classifies the individual cells.
+The [HPA InceptionV3 model](https://bioimage.io/#/?id=10.5281%2Fzenodo.5910854) then classifies the individual cells.
 
 We demonstrate how this approach can be wrapped for 3 different backends using the bioimageio models and consumer software.
 
