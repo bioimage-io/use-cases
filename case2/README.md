@@ -19,7 +19,12 @@ TODO:
 TODO:
 - use stardist modelzoo library in zero-cost notebook
 
-## Apply retrained model in deepimagej (and maybe also python)
+## Apply retrained model in deepimagej
 
 TODO:
 - figure out how exactly to run stardist post-processing in deepIJ
+
+## Evaluate retrained model in python
+
+TODO:
+- quantitatively compare performance of the retrained model with the pretrained model on the test images using the available ground-truth labels
