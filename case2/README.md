@@ -5,6 +5,8 @@ We apply it to the [Lizard dataset](https://warwick.ac.uk/fac/cross_fac/tia/data
 
 <img src="images/stardist_he_lizard.png" alt="drawing" width="800"/>
 
+Note that the images are upscaled by a factor of 2 to match the resolution of images that the stardist model was trained on.
+
 ## Apply stardist model in QuPath and correct segmentation
 
 TODO:
