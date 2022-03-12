@@ -1,17 +1,15 @@
-# Use-case 2: Stardist model
+# Use-case 2: Stardist H&E nucleus segmentation
 
-## Initial model
+In this use-casel, we use the stardist H&E model pretrained on [MoNuSeg](https://monuseg.grand-challenge.org/Data/) and [TNBC](https://zenodo.org/record/1175282#.X6mwG9so-CN): https://bioimage.io/#/?tags=stardist&id=10.5281%2Fzenodo.6338614.
+We apply it to the [Lizard dataset](https://warwick.ac.uk/fac/cross_fac/tia/data/lizard/), see the pretrained model applied to one of the lizard images below, colored instance masks are stardist predictions, red instance outlines mark the expected nuclei.
 
-We will use the stardist H&E model pretrained on MoNuSeg. For now it's available here: https://oc.embl.de/index.php/s/BHL7SGVeq0E4bbj. We will make it available on the bioimageio website as soon as the stardist python PR is merged.
-
-TODO:
-- to finish stardist integration and upload stardist models
+<img src="images/stardist_he_lizard.png" alt="drawing" width="800"/>
 
 ## Apply stardist model in QuPath and correct segmentation
 
 TODO:
 - check that we can apply the stardist model in bioimage.io format in QuPath
-- apply in QuPath in data from Lizard (https://arxiv.org/abs/2108.11195)
+- apply in QuPath to data from lizard
 - use qupath to correct predictions and export the corrected data for pre-training
 
 ## Retrain with corrected segmentation in zero-cost
