@@ -97,13 +97,13 @@ def download_data(input_csv, tmp_dir, images_per_class):
     return image_paths
 
 
-def load_model(doi, tmp_dir):
-    out_folder = os.path.join(tmp_dir, doi)
+def load_model(model_id, tmp_dir):
+    out_folder = os.path.join(tmp_dir, model_id)
     out_path = os.path.join(out_folder, "model.zip")
     if os.path.exists(out_path):
         return bioimageio.core.load_resource_description(out_path)
     os.makedirs(out_folder, exist_ok=True)
-    bioimageio.core.export_resource_package(doi, output_path=out_path)
+    bioimageio.core.export_resource_package(model_id, output_path=out_path)
     return bioimageio.core.load_resource_description(out_path)
 
 
