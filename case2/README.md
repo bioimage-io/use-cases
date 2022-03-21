@@ -9,10 +9,15 @@ Note that the images are upscaled by a factor of 2 to match the resolution of im
 
 ## Apply stardist model in QuPath and correct segmentation
 
-TODO:
-- check that we can apply the stardist model in bioimage.io format in QuPath
-- apply in QuPath to data from lizard
-- use qupath to correct predictions and export the corrected data for pre-training
+We apply the pretrained H&E model to some images from Lizard and correct the predictions:
+- Run `prepare_data_for_qupath.py` to select and rescale the data for QuPath
+- Download the stardist model with `download_stardist.py` (TODO: change this script if we implement https://github.com/stardist/stardist/pull/187)
+- Prepare QuPath for running StarDist:
+  - install the StarDist extension: https://qupath.readthedocs.io/en/stable/docs/advanced/stardist.html#getting-the-stardist-extension
+  - install the tensorflow extension: https://qupath.readthedocs.io/en/stable/docs/advanced/stardist.html#use-tensorflow
+- Apply stardist to the lizard images with the `apply_stardist_qupath.groovy` script using the [QuPath scripting functionality](https://qupath.readthedocs.io/en/stable/docs/scripting/workflows_to_scripts.html#running-a-script-for-a-single-image). 
+  - To run it adapt the path to the model in  
+- Correct the predictions and export via (TODO need a script for this)
 
 ## Retrain with corrected segmentation in zero-cost
 
