@@ -16,7 +16,7 @@ We apply the pretrained H&E model to some images from Lizard and correct the pre
   - install the StarDist extension: https://qupath.readthedocs.io/en/stable/docs/advanced/stardist.html#getting-the-stardist-extension
   - install the tensorflow extension: https://qupath.readthedocs.io/en/stable/docs/advanced/stardist.html#use-tensorflow
 - Apply stardist to the lizard images with the `apply_stardist_qupath.groovy` script using the [QuPath scripting functionality](https://qupath.readthedocs.io/en/stable/docs/scripting/workflows_to_scripts.html#running-a-script-for-a-single-image). 
-  - To run it adapt the path to the model in  
+  - To run it adapt the path to the model in the script here: https://github.com/bioimage-io/use-cases/blob/main/case2/apply_stardist_qupath.groovy#L26
 - Correct the predictions and export via (TODO need a script for this)
 
 ## Retrain with corrected segmentation in zero-cost
