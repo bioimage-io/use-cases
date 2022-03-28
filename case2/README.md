@@ -11,13 +11,14 @@ Note that the images are upscaled by a factor of 2 to match the resolution of im
 
 Apply the pretrained H&E model to some images from Lizard and correct the predictions:
 - Download the stardist model with `download_stardist_model.py`
-- Run `prepare_data_for_qupath.py` to select and rescale the data for QuPath
+- Run `prepare_data_for_qupath.py` to select the data for QuPath
 - Prepare QuPath for running StarDist:
   - install the StarDist extension: https://qupath.readthedocs.io/en/stable/docs/advanced/stardist.html#getting-the-stardist-extension
   - install the tensorflow extension: https://qupath.readthedocs.io/en/stable/docs/advanced/stardist.html#use-tensorflow
 - Apply stardist to the lizard images with the `apply_stardist_qupath.groovy` script using the [QuPath scripting functionality](https://qupath.readthedocs.io/en/stable/docs/scripting/workflows_to_scripts.html#running-a-script-for-a-single-image). 
-  - To run it adapt the path to the model in the script here: https://github.com/bioimage-io/use-cases/blob/main/case2/apply_stardist_qupath.groovy#L26
-- Correct the predictions and export via (TODO need a script for this)
+  - To run it adapt the path to the model in the script here: https://github.com/bioimage-io/use-cases/blob/main/case2/apply_stardist_qupath.groovy#L27
+- Correct the predictions using the qupath annotation functionality (check out [these tweets](https://twitter.com/petebankhead/status/1295965136646176768) for a short overview of this functionality)
+- Export the label image using the `export_labels_qupath.groovy` script.
 
 ## Retrain with corrected segmentation in zero-cost
 

@@ -21,15 +21,17 @@ import qupath.lib.gui.dialogs.Dialogs
 import qupath.ext.stardist.StarDist2D
 import qupath.opencv.tools.OpenCVTools
 
+setPixelSizeMicrons(0.5, 0.5)
 
-// Define paths & input normalization percentiles
-var pathModel = '/path/to/stardist-h&e-nuclei-segmentation_tensorflow_saved_model_bundle/TF_SavedModel'
+// specify the path to the model
+var pathModel = '/home/pape/Work/bioimageio/use-cases/case2/he-model-pretrained/bioimageio'
+// Define nput normalization percentiles etc
 double minPercentile = 1.0                       // Input normalization min percentile
 double maxPercentile = 99.8                      // Input normalization max percentile
 boolean jointChannelNormalize = true            // Optionally normalize channels together (rather than independently)
-double predictionThreshold = 0.6924782541382084  // Prediction threshold
-double pixelSizeMicrons = Double.NaN             // Specify if input resolution should be set (rather than using full resolution)
-boolean createAnnotations = false                // Create cells as annotations, which can then be edited (default is to create detection objects)
+double predictionThreshold = 0.5  // Prediction threshold
+double pixelSizeMicrons = 0.25             // Specify if input resolution should be set (rather than using full resolution)
+boolean createAnnotations = true                // Create cells as annotations, which can then be edited (default is to create detection objects)
 
 // Customize how StarDist will operate
 var stardistBuilder = StarDist2D.builder(pathModel)
