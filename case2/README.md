@@ -19,6 +19,12 @@ Apply the pretrained H&E model to some images from Lizard and correct the predic
   - To run it adapt the path to the model in the script here: https://github.com/bioimage-io/use-cases/blob/main/case2/apply_stardist_qupath.groovy#L27
 - Correct the predictions using the qupath annotation functionality (check out [these tweets](https://twitter.com/petebankhead/status/1295965136646176768) for a short overview of this functionality)
 - Export the label image using the `export_labels_qupath.groovy` script.
+  - Important: Remove the rectangular annotation that the stardist plugin creates around the whole image before exporting the labels, otherwise the export script will not work correctly.
+
+See a short video demonstrating the label correction in qu-path:
+  
+https://user-images.githubusercontent.com/4263537/160414686-10ae46ae-5903-4a67-a35b-1f043b68711d.mp4
+
 
 ## Retrain with corrected segmentation in zero-cost
 
