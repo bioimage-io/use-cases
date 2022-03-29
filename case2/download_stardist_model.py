@@ -25,7 +25,8 @@ def main():
     args = parser.parse_args()
     dois = {
         "pretrained": "10.5281/zenodo.6338614",
-        "finetuned": "TODO"
+        # TODO upload on bioimageio
+        "finetuned": "./qupath/stardist-lizard-retrainedbioimageio.zip"
     }
     model_name = args.model_name
     assert model_name in dois, f"model_name must be one of {list(dois.keys())}, got {model_name}"

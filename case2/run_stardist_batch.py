@@ -22,7 +22,7 @@ def apply_model(model, image_path, save_path):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--input_folder", "-i", required=True)
-    parser.add_argument("--output_folder", "-o", required=True)
+    parser.add_argument("--output_root", "-o", required=True)
     parser.add_argument("--model_folder", "-m", required=True)
     args = parser.parse_args()
 
@@ -31,11 +31,12 @@ def main():
     images = glob(os.path.join(args.input_folder, "*png"))
     print("Applying stardist model to", len(images), "images")
 
-    os.makedirs(args.output_folder, exist_ok=True)
+    output_folder = os.path.join(args.output_root, os.path.basename(model_folder))
+    os.makedirs(output_folder, exist_ok=True)
     predictions = []
     for im in tqdm(images):
         name = os.path.basename(im).replace(".png", ".tif")
-        save_path = os.path.join(args.output_folder, name)
+        save_path = os.path.join(output_folder, name)
         apply_model(model, im, save_path)
         predictions.append(save_path)
 
