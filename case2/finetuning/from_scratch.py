@@ -2,11 +2,10 @@ import argparse
 import os
 from glob import glob
 from pathlib import Path
-from shutil import copytree, rmtree
 
 import imageio
 import numpy as np
-from stardist.models import StarDist2D
+from stardist.models import StarDist2D, Config2D
 from csbdeep.utils import normalize
 
 
@@ -41,11 +40,12 @@ def augmenter(x, y):
     return x, y
 
 
-def finetune():
+def from_scratch():
     parser = argparse.ArgumentParser()
     parser.add_argument("-n", "--name", required=True)
     parser.add_argument("-r", "--root", required=True)
-    parser.add_argument("--n_epochs", default=5, type=int)
+    parser.add_argument("--n_epochs", default=200, type=int)
+    parser.add_argument("--use_gpu", "-g", default=0, type=int)
     args = parser.parse_args()
 
     im_paths = glob(os.path.join(args.root, "images/*.tif"))
@@ -70,12 +70,16 @@ def finetune():
     x_train, y_train = [x[tid] for tid in train_ids], [y[tid] for tid in train_ids]
     x_val, y_val = [x[vid] for vid in val_ids], [y[vid] for vid in val_ids]
 
-    model_folder = f"./models/finetuned-{args.name}"
-    if os.path.exists(model_folder):
-        rmtree(model_folder)
-    copytree("../he-model-pretrained", model_folder)
+    conf = Config2D(
+        n_rays=32,
+        grid=(2, 2),
+        use_gpu=bool(args.use_gpu),
+        n_channel_in=3
+    )
+
+    model_folder = f"./models/scratch-{args.name}"
     model_folder = Path(model_folder)
-    model = StarDist2D(None, model_folder.name, model_folder.parent)
+    model = StarDist2D(conf, model_folder.name, model_folder.parent)
     model.config.train_patch_size = [384, 384]
 
     print("Start training ....")
@@ -86,4 +90,4 @@ def finetune():
 
 
 if __name__ == "__main__":
-    finetune()
+    from_scratch()

@@ -97,7 +97,7 @@ def train_shallow2deep(args):
         prepare_shallow2deep(args, rf_folder)
     assert os.path.exists(rf_folder)
 
-    model = AnisotropicUNet(in_channels=1, out_channels=1, final_activation="Sigmoid",
+    model = AnisotropicUNet(in_channels=1, out_channels=2, final_activation="Sigmoid",
                             scale_factors=[[1, 2, 2], [1, 2, 2], [2, 2, 2], [2, 2, 2]])
 
     train_loader = get_loader(args, "train", rf_folder)
