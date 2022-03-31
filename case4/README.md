@@ -7,13 +7,13 @@ Here, we demonstrate the approach for mitochondria segmentation in EM.
 
 ## Training and export in python
 
-- `train_enhancer.py`: train the enhancer on the [Mito EM dataset](https://mitoem.grand-challenge.org/) using [torch-em](https://github.com/constantinpape/torch-em).
+- `train_enhancer.py`: train the enhancer on the [VNC dataset](https://figshare.com/articles/dataset/Segmented_anisotropic_ssTEM_dataset_of_neural_tissue/856713) using [torch-em](https://github.com/constantinpape/torch-em).
 - `export_enhancer.py`: export to the modelzoo format
 - upload to the model zoo
 
 ## Application in ilastik
 
-- train and predict with pixel classification on [VNC](https://figshare.com/articles/dataset/Segmented_anisotropic_ssTEM_dataset_of_neural_tissue/856713)
+- train and predict with pixel classification on the [Mito EM dataset](https://mitoem.grand-challenge.org/)
 - apply NeuralNetworkWorkflow to the pixel classification output using [the enhancer from the model zoo]()
 
 ## Application in Deep ImageJ

@@ -1,94 +1,60 @@
 import os
 from glob import glob
 
+import numpy as np
 import torch_em
 import torch_em.shallow2deep as shallow2deep
-from torch_em.model import AnisotropicUNet
-from torch_em.data.datasets.mitoem import _require_mitoem_sample, _check_data
-
-
-def get_filter_config():
-    filters = ["gaussianSmoothing",
-               "laplacianOfGaussian",
-               "gaussianGradientMagnitude",
-               "hessianOfGaussianEigenvalues"]
-    sigmas = [
-        (0.4, 1.6, 1.6),
-        (0.8, 3.5, 3.5),
-        (1.25, 5.0, 5.0),
-    ]
-    filters_and_sigmas = [
-        (filt, sigma) for filt in filters for sigma in sigmas
-    ]
-    return filters_and_sigmas
+from torch_em.model import UNet2d
+from torch_em.data.datasets.vnc import _get_vnc_data
 
 
 def prepare_shallow2deep(args, out_folder):
-    patch_shape_min = [32, 128, 128]
-    patch_shape_max = [64, 256, 256]
+    patch_shape_min = [1, 256, 256]
+    patch_shape_max = [1, 512, 512]
 
     raw_transform = torch_em.transform.raw.normalize
-    label_transform = shallow2deep.BoundaryTransform(ndim=3, add_binary_target=True)
+    label_transform = shallow2deep.BoundaryTransform(ndim=2, add_binary_target=True)
 
-    root = args.input
-    paths = [
-        os.path.join(root, "human_train.n5"), os.path.join(root, "rat_train.n5")
-    ]
+    path = os.path.join(args.input, "vnc_train.h5")
     raw_key = "raw"
-    label_key = "labels"
+    label_key = "labels/mitochondria"
 
     shallow2deep.prepare_shallow2deep(
-        raw_paths=paths, raw_key=raw_key, label_paths=paths, label_key=label_key,
+        raw_paths=path, raw_key=raw_key, label_paths=path, label_key=label_key,
         patch_shape_min=patch_shape_min, patch_shape_max=patch_shape_max,
         n_forests=args.n_rfs, n_threads=args.n_threads,
-        output_folder=out_folder, ndim=3,
+        output_folder=out_folder, ndim=2,
         raw_transform=raw_transform, label_transform=label_transform,
         is_seg_dataset=True,
-        filter_config=get_filter_config(),
     )
 
 
 def get_loader(args, split, rf_folder):
     rf_paths = glob(os.path.join(rf_folder, "*.pkl"))
     rf_paths.sort()
-    patch_shape = (32, 256, 256)
+    patch_shape = (1, 512, 512)
 
-    root = args.input
-    if split == "train":
-        paths = [
-            os.path.join(root, "human_train.n5"), os.path.join(root, "rat_train.n5")
-        ]
-        n_samples = 1000
-    else:
-        paths = [
-            os.path.join(root, "human_val.n5"), os.path.join(root, "rat_val.n5")
-        ]
-        n_samples = 25
+    path = os.path.join(args.input, "vnc_train.h5")
+    roi = np.s_[:18, :, :] if split == "train" else np.s_[18:, :, :]
+    n_samples = 500 if split == "train" else 25
 
     raw_transform = torch_em.transform.raw.normalize
-    label_transform = torch_em.transform.BoundaryTransform(ndim=3, add_binary_target=True)
+    label_transform = torch_em.transform.BoundaryTransform(ndim=2, add_binary_target=True)
     loader = shallow2deep.get_shallow2deep_loader(
-        raw_paths=paths, raw_key="raw",
-        label_paths=paths, label_key="labels",
+        raw_paths=path, raw_key="raw",
+        label_paths=path, label_key="labels/mitochondria",
         rf_paths=rf_paths,
         batch_size=args.batch_size, patch_shape=patch_shape,
         raw_transform=raw_transform, label_transform=label_transform,
-        n_samples=n_samples, ndim=3, is_seg_dataset=True, shuffle=True,
-        num_workers=24, filter_config=get_filter_config(),
+        n_samples=n_samples, ndim=2, is_seg_dataset=True, shuffle=True,
+        num_workers=12, rois=roi
     )
     return loader
 
 
-def download_data(path):
-    samples = ["human", "rat"]
-    for sample in samples:
-        if not _check_data(path, sample):
-            _require_mitoem_sample(path, sample, download=True)
-
-
 def train_shallow2deep(args):
     name = "shallow2deep-em-mitochondria"
-    download_data(args.input)
+    _get_vnc_data(args.input, download=True)
 
     # check if we need to train the rfs for preparation
     rf_folder = os.path.join("checkpoints", name, "rfs")
@@ -97,8 +63,8 @@ def train_shallow2deep(args):
         prepare_shallow2deep(args, rf_folder)
     assert os.path.exists(rf_folder)
 
-    model = AnisotropicUNet(in_channels=1, out_channels=2, final_activation="Sigmoid",
-                            scale_factors=[[1, 2, 2], [1, 2, 2], [2, 2, 2], [2, 2, 2]])
+    model = UNet2d(in_channels=1, out_channels=2, final_activation="Sigmoid",
+                   depth=4, initial_features=64)
 
     train_loader = get_loader(args, "train", rf_folder)
     val_loader = get_loader(args, "val", rf_folder)
