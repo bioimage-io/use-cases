@@ -29,22 +29,22 @@ from tqdm import tqdm
 PRETRAINED_SCORE = 0.7866029100142583
 
 
-def apply_model(model, image_path, save_path):
+def apply_model(model, image_path, save_path, scale):
     input_ = imageio.imread(image_path)
     input_ = normalize(input_.astype("float32"), 1.0, 99.8)
-    nuclei, _ = model.predict_instances(input_, scale=2)
+    nuclei, _ = model.predict_instances(input_, scale=scale)
     assert nuclei.shape == input_.shape[:-1]
     imageio.imsave(save_path, nuclei)
 
 
-def prediction(model_name):
-    input_folder = "/home/pape/Work/data/lizard/train_images"
+def prediction(model_name, scale):
+    input_folder = "/g/kreshuk/data/lizard/train_images"
     images = glob(os.path.join(input_folder, "*png"))
     print("Applying stardist model to", len(images), "images")
 
-    output_folder = f"./predictions/{model_name}"
+    output_folder = f"./predictions/{os.path.basename(model_name)}"
     os.makedirs(output_folder, exist_ok=True)
-    model_root = f"./{model_name}"
+    model_root = Path(f"./{model_name}")
 
     def _predict(im):
         name = os.path.basename(im).replace(".png", ".tif")
@@ -53,9 +53,9 @@ def prediction(model_name):
             return
         model_folder = Path(model_root)
         model = StarDist2D(None, model_folder.name, model_folder.parent)
-        apply_model(model, im, save_path)
+        apply_model(model, im, save_path, scale)
 
-    n_threads = 8
+    n_threads = 12
     with futures.ThreadPoolExecutor(n_threads) as tp:
         list(tqdm(tp.map(_predict, images), total=len(images), desc="Run prediction"))
     return output_folder
@@ -70,7 +70,7 @@ def evaluate_prediction(pred_path, label_path):
 
 
 def evaluation(pred_folder):
-    label_folder = "/home/pape/Work/data/lizard/train_labels/Labels"
+    label_folder = "/g/kreshuk/data/lizard/train_labels/Labels"
     scores = []
     predictions = glob(os.path.join(pred_folder, "*.tif"))
     predictions.sort()
@@ -140,8 +140,9 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-m", "--model", required=True)
     parser.add_argument("-c", "--compare", type=int, default=0)
+    parser.add_argument("-s", "--scale", default=1, type=int)
     args = parser.parse_args()
-    pred_folder = prediction(args.model)
+    pred_folder = prediction(args.model, args.scale)
     scores = evaluation(pred_folder)
     if bool(args.compare):
         compare(pred_folder, scores)
