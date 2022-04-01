@@ -13,7 +13,7 @@ def prepare_shallow2deep(args, out_folder):
     patch_shape_max = [1, 512, 512]
 
     raw_transform = torch_em.transform.raw.normalize
-    label_transform = shallow2deep.BoundaryTransform(ndim=2, add_binary_target=True)
+    label_transform = shallow2deep.BoundaryTransform(ndim=2, add_binary_target=False)
 
     path = os.path.join(args.input, "vnc_train.h5")
     raw_key = "raw"

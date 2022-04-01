@@ -7,9 +7,7 @@ Here, we demonstrate the approach for mitochondria segmentation in EM.
 
 ## Training and export in python
 
-- `train_enhancer.py`: train the enhancer on the [VNC dataset](https://figshare.com/articles/dataset/Segmented_anisotropic_ssTEM_dataset_of_neural_tissue/856713) using [torch-em](https://github.com/constantinpape/torch-em).
-- `export_enhancer.py`: export to the modelzoo format
-- upload to the model zoo
+The `training` folder contains the scripts to train the enhancer. Note that this only needs to be done once and then this enhancer can be used to improve 2D mitochondria EM segmentation results.
 
 ## Application in ilastik
 
