@@ -12,7 +12,7 @@ The `training` folder contains the scripts to train the enhancer. Note that this
 ## Application in ilastik
 
 - train and predict with pixel classification on the [Mito EM dataset](https://mitoem.grand-challenge.org/)
-- apply NeuralNetworkWorkflow to the pixel classification output using [the enhancer from the model zoo]()
+- apply NeuralNetworkWorkflow to the pixel classification output using [the enhancer from the model zoo](https://bioimage.io/#/?tags=mitochondria&id=10.5281%2Fzenodo.6406756)
 
 ## Application in Deep ImageJ
 
