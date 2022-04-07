@@ -19,8 +19,17 @@ The screenshots below show interactive training of the RF in ilastik (pixelclass
 <img src="images/mito-enhancer-ilastik.png" alt="drawing" width="1200"/>
 <img src="images/mitoem-enhancer-pred.png" alt="drawing" width="1200"/>
 
-## Application in Deep ImageJ
+## Application in Fiji
 
-TODO
-- train and predict RF with weka
-- apply enhancer with DIJ to its predictions
+- Export the data to tif so it can be read in Fiji, e.g. via `export_for_fiji.py`
+- Use the WEKA trainable segmentation plugin to train and predict a RF for mito classification
+    - see screenshot below
+    - export the segmentation result back to FIJI
+- Apply the [enhancer model](https://bioimage.io/#/?tags=mitochondria&id=10.5281%2Fzenodo.6406756) to the WEKA prediction with deepImageJ
+    - Install the model in deepImageJ via `DeepImageJ Install Model`
+    - Apply it to the WEKA prediction via `DeepImageJ Run`
+
+Screenshots: weka segmentation,
+<img src="images/weka.png" alt="drawing" width="1200"/>
+
+FIXME DIJ does not work for the model.
