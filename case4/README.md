@@ -29,7 +29,6 @@ The screenshots below show interactive training of the RF in ilastik (pixelclass
     - Install the model in deepImageJ via `DeepImageJ Install Model`
     - Apply it to the WEKA prediction via `DeepImageJ Run`
 
-Screenshots: weka segmentation,
+Screenshots: weka segmentation, enhancer in deepimagej
 <img src="images/weka.png" alt="drawing" width="1200"/>
-
-FIXME DIJ does not work for the model.
+<img src="images/dij.png" alt="drawing" width="1200"/>
