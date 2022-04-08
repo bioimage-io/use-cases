@@ -1,4 +1,3 @@
-import argparse
 import os
 import zipfile
 import stardist
@@ -20,18 +19,8 @@ def download_stardist(model_name, doi):
 
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-m", "--model_name", default="pretrained")
-    args = parser.parse_args()
-    dois = {
-        "pretrained": "10.5281/zenodo.6338614",
-        # TODO upload on bioimageio
-        # "finetuned": "./qupath/retrained-model-qupath-v3bioimageio.zip"
-        "finetuned": "./qupath/retrained-model-qupath-v3bioimageio.zip"
-    }
-    model_name = args.model_name
-    assert model_name in dois, f"model_name must be one of {list(dois.keys())}, got {model_name}"
-    download_stardist(model_name, dois[model_name])
+    doi = "10.5281/zenodo.6338614",
+    download_stardist("pretrained", doi)
 
 
 if __name__ == "__main__":

@@ -31,4 +31,15 @@ And images of application in QuPath:
 
 ## Apply the model in deepImageJ
 
-TODO: apply the pre-trained model in deepImageJ and perform some measurement with Fiji to demonstrate the utility of this approach
+- Open a lizard image in Fiji
+- Resize it to twice the size to match the resolution of the pre-trained model (`Image->Adjust->Size...`)
+- Run the model in DeepImageJ
+    - Install the model via `DeepImageJ Install Model`
+    - Apply the model via `DeepImageJ Run`
+    - This will result in the intermediate stardist predictions, we still need to apply stardist postprocessing to get the segmentation
+- Apply stardist post-processing
+    - Make sure the stardist plugin is installed (`Help->Update->Manage Update Sites->StarDist`)
+    - Apply the postprocessing macro: `Plugns->Macros->Run` then select `stardist_postprocessing.ijm` from `he-model-pretrained/bioimageio`
+
+See the result of stardist applied in deepImageJ
+<img src="images/deepimagej_stardist.png" alt="drawing" width="1200"/>
