@@ -44,7 +44,7 @@ The fine-tuning significantly increses the model's performance for the leaf data
 
 - Predict on leaf data with DeepImageJ via `Run DeepImageJ`
 - Use Morpholibj segmentation GUI for watershed based segmentation and label edit interface to correct labels
-- TODO data measurement
+- Perform data measurements and plot them using the `plot.ijm` macro
 
 See screenshots below for the steps:
 
@@ -53,3 +53,5 @@ See screenshots below for the steps:
 <img src="images/dij/morpholibj.png" alt="drawing" width="800"/>
 <img src="images/dij/editlabelspng" alt="drawing" width="800"/>
 <img src="images/dij/overlay.png" alt="drawing" width="800"/>
+<img src="images/dij/scatter1.png" alt="drawing" width="800"/>
+<img src="images/dij/scatter2.png" alt="drawing" width="800"/>
