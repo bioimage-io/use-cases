@@ -43,3 +43,21 @@ And images of application in QuPath:
 
 See the result of stardist applied in deepImageJ
 <img src="images/deepimagej_stardist.png" alt="drawing" width="1200"/>
+
+
+## Apply the model in stardist python
+
+- `run_stardist_python.py`
+
+<img src="images/stardist-python.png" alt="drawing" width="1200"/>
+
+
+## Apply the model in zero-cost
+
+- Open the stardist 2d notebook: https://colab.research.google.com/github/esgomezm/ZeroCostDL4Mic/blob/master/Colab_notebooks/BioImage.io%20notebooks/StarDist_2D_ZeroCostDL4Mic_BioImageModelZoo_export.ipynb
+    - will be on the main zero cost once https://github.com/HenriquesLab/ZeroCostDL4Mic/pull/181 is merged
+- Start the notebook and go to `Loading weights from a pre-trained notebook`
+    - Select `pretrained_model_choice: BioImage Model Zoo`
+    - Enter the doi (10.5281/zenodo.6338614) in `bioimageio_model`
+- Go to `Error mapping and quality metrics estimation` to run the model on data from your google drive
+    - TODO: still need to do this, can't load the model right now because zenodo is down
