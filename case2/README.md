@@ -60,4 +60,5 @@ See the result of stardist applied in deepImageJ
     - Select `pretrained_model_choice: BioImage Model Zoo`
     - Enter the doi (10.5281/zenodo.6338614) in `bioimageio_model`
 - Go to `Error mapping and quality metrics estimation` to run the model on data from your google drive
-    - TODO: still need to do this, can't load the model right now because zenodo is down
+
+<img src="images/zerocost-stardist.png" alt="drawing" width="1200"/>
