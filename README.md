@@ -1,2 +1,5 @@
 # use-cases
-Drafting the use-cases for the publication
+
+Use-cases for the [BioImage.IO publication](TODO).  
+
+See https://bioimage.io/#/ for the modelzoo website.
