@@ -37,7 +37,7 @@ See the screenshots below for prediction and multicut results in ilastik.
 
 The fine-tuning significantly increses the model's performance for the leaf data, see a screenhot for a slice of the leaf raw data (left), predictions from the initial model (middle) and fine-tuned predictions (right) below. (On data not part of the training dataset.)
 
-<img src="images/comparison.png" alt="drawing" width="800"/>
+<img src="https://raw.githubusercontent.com/bioimage-io/use-cases/main/case2-finetuning/images/comparison.png" alt="drawing" width="800"/>
 
 
 ## Application in deepimageJ
@@ -48,10 +48,10 @@ The fine-tuning significantly increses the model's performance for the leaf data
 
 See screenshots below for the steps:
 
-<img src="images/dij/deepimagej_gui.png" alt="drawing" width="800"/>
-<img src="images/dij/output.png" alt="drawing" width="800"/>
-<img src="images/dij/morpholibj.png" alt="drawing" width="800"/>
-<img src="images/dij/editlabelspng" alt="drawing" width="800"/>
-<img src="images/dij/overlay.png" alt="drawing" width="800"/>
-<img src="images/dij/scatter1.png" alt="drawing" width="800"/>
-<img src="images/dij/scatter2.png" alt="drawing" width="800"/>
+<img src="https://raw.githubusercontent.com/bioimage-io/use-cases/main/case2-finetuning/images/dij/deepimagej_gui.png" alt="drawing" width="800"/>
+<img src="https://raw.githubusercontent.com/bioimage-io/use-cases/main/case2-finetuning/images/dij/output.png" alt="drawing" width="800"/>
+<img src="https://raw.githubusercontent.com/bioimage-io/use-cases/main/case2-finetuning/images/dij/morpholibj.png" alt="drawing" width="800"/>
+<img src="https://raw.githubusercontent.com/bioimage-io/use-cases/main/case2-finetuning/images/dij/editlabelspng" alt="drawing" width="800"/>
+<img src="https://raw.githubusercontent.com/bioimage-io/use-cases/main/case2-finetuning/images/dij/overlay.png" alt="drawing" width="800"/>
+<img src="https://raw.githubusercontent.com/bioimage-io/use-cases/main/case2-finetuning/images/dij/scatter1.png" alt="drawing" width="800"/>
+<img src="https://raw.githubusercontent.com/bioimage-io/use-cases/main/case2-finetuning/images/dij/scatter2.png" alt="drawing" width="800"/>
