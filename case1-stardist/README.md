@@ -25,8 +25,8 @@ https://user-images.githubusercontent.com/4263537/160414686-10ae46ae-5903-4a67-a
 
 And images of application in QuPath:
 
-<img src="https://github.com/bioimage-io/use-cases/blob/main/case1-stardist/images/stardist-qupath1.png" alt="drawing" width="1200"/>
-<img src="https://github.com/bioimage-io/use-cases/blob/main/case1-stardist/images/stardist-qupath2.png" alt="drawing" width="1200"/>
+<img src="https://github.com/bioimage-io/use-cases/blob/main/case1-stardist/images/stardist-qupath1.png" align="center" width="1200"/>
+<img src="https://github.com/bioimage-io/use-cases/blob/main/case1-stardist/images/stardist-qupath2.png" align="center" width="1200"/>
 
 
 ## Apply the model in deepImageJ
