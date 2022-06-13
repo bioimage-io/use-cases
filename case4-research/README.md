@@ -15,9 +15,9 @@ The `training` folder contains the scripts to train the enhancer. Note that this
 - apply NeuralNetworkWorkflow to the pixel classification output using [the enhancer from the model zoo](https://bioimage.io/#/?tags=mitochondria&id=10.5281%2Fzenodo.6406756)
 
 The screenshots below show interactive training of the RF in ilastik (pixelclassification) on MitoEM, application of the Enhancer in ilastik (Neural Network classification) and an overview of both the RF and enhancer predictions for a full slice of the MitoEM data. 
-<img src="images/mito-ilastik.png" alt="drawing" width="1200"/>
-<img src="images/mito-enhancer-ilastik.png" alt="drawing" width="1200"/>
-<img src="images/mitoem-enhancer-pred.png" alt="drawing" width="1200"/>
+<img src="https://github.com/bioimage-io/use-cases/blob/main/case4-research/images/mito-ilastik.png" alt="drawing" width="800"/>
+<img src="https://github.com/bioimage-io/use-cases/blob/main/case4-research/images/mito-enhancer-ilastik.png" alt="drawing" width="800"/>
+<img src="https://github.com/bioimage-io/use-cases/blob/main/case4-research/images/mitoem-enhancer-pred.png" alt="drawing" width="800"/>
 
 ## Application in Fiji
 
@@ -30,5 +30,5 @@ The screenshots below show interactive training of the RF in ilastik (pixelclass
     - Apply it to the WEKA prediction via `DeepImageJ Run`
 
 Screenshots: weka segmentation, enhancer in deepimagej
-<img src="images/weka.png" alt="drawing" width="1200"/>
-<img src="images/dij.png" alt="drawing" width="1200"/>
+<img src="https://github.com/bioimage-io/use-cases/blob/main/case4-research/images/weka.png" alt="drawing" width="800"/>
+<img src="https://github.com/bioimage-io/use-cases/blob/main/case4-research/images/dij.png" alt="drawing" width="800"/>
