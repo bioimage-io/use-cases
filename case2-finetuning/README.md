@@ -48,10 +48,10 @@ The fine-tuning significantly increses the model's performance for the leaf data
 
 See screenshots below for the steps:
 
-<img src="https://raw.githubusercontent.com/bioimage-io/use-cases/main/case2-finetuning/images/dij/deepimagej_gui.png" alt="drawing" width="800"/>
-<img src="https://raw.githubusercontent.com/bioimage-io/use-cases/main/case2-finetuning/images/dij/output.png" alt="drawing" width="800"/>
-<img src="https://raw.githubusercontent.com/bioimage-io/use-cases/main/case2-finetuning/images/dij/morpholibj.png" alt="drawing" width="800"/>
-<img src="https://raw.githubusercontent.com/bioimage-io/use-cases/main/case2-finetuning/images/dij/editlabelspng" alt="drawing" width="800"/>
-<img src="https://raw.githubusercontent.com/bioimage-io/use-cases/main/case2-finetuning/images/dij/overlay.png" alt="drawing" width="800"/>
-<img src="https://raw.githubusercontent.com/bioimage-io/use-cases/main/case2-finetuning/images/dij/scatter1.png" alt="drawing" width="800"/>
-<img src="https://raw.githubusercontent.com/bioimage-io/use-cases/main/case2-finetuning/images/dij/scatter2.png" alt="drawing" width="800"/>
+<img src="https://raw.githubusercontent.com/bioimage-io/use-cases/main/case2-finetuning/images/dij/deepimagej_gui.png" alt="drawing" width="400"/>
+<img src="https://raw.githubusercontent.com/bioimage-io/use-cases/main/case2-finetuning/images/dij/output.png" alt="drawing" width="400"/>
+<img src="https://raw.githubusercontent.com/bioimage-io/use-cases/main/case2-finetuning/images/dij/morpholibj.png" alt="drawing" width="400"/>
+<img src="https://raw.githubusercontent.com/bioimage-io/use-cases/main/case2-finetuning/images/dij/editlabels.png" alt="drawing" width="400"/>
+<img src="https://raw.githubusercontent.com/bioimage-io/use-cases/main/case2-finetuning/images/dij/overlay.png" alt="drawing" width="400"/>
+<img src="https://raw.githubusercontent.com/bioimage-io/use-cases/main/case2-finetuning/images/dij/scatter1.png" alt="drawing" width="400"/>
+<img src="https://raw.githubusercontent.com/bioimage-io/use-cases/main/case2-finetuning/images/dij/scatter2.png" alt="drawing" width="400"/>
