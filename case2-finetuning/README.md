@@ -1,4 +1,4 @@
-# Use-case 1: 3D U-Net for cell-segmentation in light microscopy
+# Use-case 2: 3D U-Net for cell-segmentation in light microscopy
 
 ## Initial Training in ZeroCost
 
