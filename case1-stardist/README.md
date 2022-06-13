@@ -1,4 +1,4 @@
-# Use-case 2: Stardist H&E nucleus segmentation
+# Use-case 1: Stardist H&E nucleus segmentation
 
 In this use-casel, we apply the stardist H&E model pretrained on [MoNuSeg](https://monuseg.grand-challenge.org/Data/) and [TNBC](https://zenodo.org/record/1175282#.X6mwG9so-CN): https://bioimage.io/#/?tags=stardist&id=10.5281%2Fzenodo.6338614.
 We apply it to the [Lizard dataset](https://warwick.ac.uk/fac/cross_fac/tia/data/lizard/) in deepImageJ and in QuPath.
