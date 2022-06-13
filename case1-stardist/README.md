@@ -42,14 +42,14 @@ And images of application in QuPath:
     - Apply the postprocessing macro: `Plugns->Macros->Run` then select `stardist_postprocessing.ijm` from `he-model-pretrained/bioimageio`
 
 See the result of stardist applied in deepImageJ
-<img src="images/deepimagej_stardist.png" alt="drawing" width="1200"/>
+<img src="https://github.com/bioimage-io/use-cases/blob/main/case1-stardist/images/deepimagej_stardist.png" alt="drawing" width="1200"/>
 
 
 ## Apply the model in stardist python
 
 - `run_stardist_python.py`
 
-<img src="images/stardist-python.png" alt="drawing" width="1200"/>
+<img src="https://github.com/bioimage-io/use-cases/blob/main/case1-stardist/images/stardist-python.png" alt="drawing" width="1200"/>
 
 
 ## Apply the model in zero-cost
@@ -61,4 +61,4 @@ See the result of stardist applied in deepImageJ
     - Enter the doi (10.5281/zenodo.6338614) in `bioimageio_model`
 - Go to `Error mapping and quality metrics estimation` to run the model on data from your google drive
 
-<img src="images/zerocost-stardist.png" alt="drawing" width="1200"/>
+<img src="https://github.com/bioimage-io/use-cases/blob/main/case1-stardist/images/zerocost-stardist.png" alt="drawing" width="1200"/>
