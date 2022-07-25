@@ -28,6 +28,9 @@ And images of application in QuPath:
 <img src="https://github.com/bioimage-io/use-cases/blob/main/case1-stardist/images/stardist-qupath1.png" align="center" width="1200"/>
 <img src="https://github.com/bioimage-io/use-cases/blob/main/case1-stardist/images/stardist-qupath2.png" align="center" width="1200"/>
 
+### Dependencies
+
+- qupath 0.3.2
 
 ## Apply the model in deepImageJ
 
@@ -44,6 +47,13 @@ And images of application in QuPath:
 See the result of stardist applied in deepImageJ
 <img src="https://github.com/bioimage-io/use-cases/blob/main/case1-stardist/images/deepimagej_stardist.png" alt="drawing" width="1200"/>
 
+### Dependencies
+
+The example was run using:
+- Fiji 2.3.0
+- DeepImageJ 2.1.15
+- StarDist Fiji 0.8.1 (required for the stardist post-processing)
+
 
 ## Apply the model in stardist python
 
@@ -51,14 +61,21 @@ See the result of stardist applied in deepImageJ
 
 <img src="https://github.com/bioimage-io/use-cases/blob/main/case1-stardist/images/stardist-python.png" alt="drawing" width="1200"/>
 
+### Dependencies
+
+- stardist python 0.8.3
+
 
 ## Apply the model in zero-cost
 
-- Open the stardist 2d notebook: https://colab.research.google.com/github/esgomezm/ZeroCostDL4Mic/blob/master/Colab_notebooks/BioImage.io%20notebooks/StarDist_2D_ZeroCostDL4Mic_BioImageModelZoo_export.ipynb
-    - will be on the main zero cost once https://github.com/HenriquesLab/ZeroCostDL4Mic/pull/181 is merged
+- Open the stardist 2d notebook: https://colab.research.google.com/github/HenriquesLab/ZeroCostDL4Mic/blob/master/Colab_notebooks/BioImage.io%20notebooks/StarDist_2D_ZeroCostDL4Mic_BioImageModelZoo_export.ipynb
 - Start the notebook and go to `Loading weights from a pre-trained notebook`
     - Select `pretrained_model_choice: BioImage Model Zoo`
     - Enter the doi (10.5281/zenodo.6338614) in `bioimageio_model`
 - Go to `Error mapping and quality metrics estimation` to run the model on data from your google drive
 
 <img src="https://github.com/bioimage-io/use-cases/blob/main/case1-stardist/images/zerocost-stardist.png" alt="drawing" width="1200"/>
+
+## Dependencies
+
+- zeroCost 1.13

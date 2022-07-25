@@ -2,7 +2,7 @@
 
 ## Initial Training in ZeroCost
 
-TODO describe training in zerocost
+TODO: describe training in zerocost (@esgomezm)
 
 ## Application in ilastik
 
@@ -55,3 +55,11 @@ See screenshots below for the steps:
 <img src="https://raw.githubusercontent.com/bioimage-io/use-cases/main/case2-finetuning/images/dij/overlay.png" alt="drawing" width="400"/>
 <img src="https://raw.githubusercontent.com/bioimage-io/use-cases/main/case2-finetuning/images/dij/scatter1.png" alt="drawing" width="400"/>
 <img src="https://raw.githubusercontent.com/bioimage-io/use-cases/main/case2-finetuning/images/dij/scatter2.png" alt="drawing" width="400"/>
+
+
+### Dependencies
+
+- ilastik: 1.4.0b21
+- zeroCost 1.13
+- Fiji 2.3.0
+- DeepImageJ 2.1.15

@@ -15,10 +15,11 @@ It uses [napari](https://github.com/napari/napari) to visualize the segmentation
 <img src="https://raw.githubusercontent.com/bioimage-io/use-cases/main/case3-devtools/images/hpa_nucleoplasm.png" alt="drawing" width="1200"/>
 <img src="https://raw.githubusercontent.com/bioimage-io/use-cases/main/case3-devtools/images/hpa_microtubules.png" alt="drawing" width="1200"/>
 
+### Dependencies
+
+An conda environment that can run the app is defined in `environment.yaml`.
+
+
 ## Usage in imjoy / bioengine
-
-TODO
-
-## Usage in deepimagej
 
 TODO

@@ -19,6 +19,10 @@ The screenshots below show interactive training of the RF in ilastik (pixelclass
 <img src="https://raw.githubusercontent.com/bioimage-io/use-cases/main/case4-research/images/mito-enhancer-ilastik.png" alt="drawing" width="800"/>
 <img src="https://raw.githubusercontent.com/bioimage-io/use-cases/main/case4-research/images/mitoem-enhancer-pred.png" alt="drawing" width="800"/>
 
+### Dependencies
+
+- ilastik: 1.4.0b21
+
 ## Application in Fiji
 
 - Export the data to tif so it can be read in Fiji, e.g. via `export_for_fiji.py`
