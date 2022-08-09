@@ -1,7 +1,3 @@
-**WARNING** 
-Due to the recent update of Google Colab that has stopped supporting TensorFlow 1, some of the notebooks of ZeroCostDL4Mic related to the use cases are not working at the moment. We are working on it and hopefully we will solve this in the next days.
-
-
 # BioImage.IO Example Applications
 
 Use-cases for the [BioImage.IO publication](TODO). This repository contains the data, scripts and other resources for the following example applications:
