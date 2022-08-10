@@ -68,7 +68,7 @@ The example was run using:
 
 ## Apply the model in zero-cost
 
-- Open the stardist 2d notebook: https://colab.research.google.com/github/HenriquesLab/ZeroCostDL4Mic/blob/master/Colab_notebooks/BioImage.io%20notebooks/StarDist_2D_ZeroCostDL4Mic_BioImageModelZoo_export.ipynb
+- Open the stardist 2d notebook: https://colab.research.google.com/github/HenriquesLab/ZeroCostDL4Mic/blob/master/Colab_notebooks/StarDist_2D_ZeroCostDL4Mic.ipynb
 - Start the notebook and go to `Loading weights from a pre-trained notebook`
     - Select `pretrained_model_choice: BioImage Model Zoo`
     - Enter the doi (10.5281/zenodo.6338614) in `bioimageio_model`
