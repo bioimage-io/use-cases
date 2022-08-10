@@ -31,7 +31,7 @@ See the screenshots below for prediction and multicut results in ilastik.
 
 - convert the raw data and segmentations for the 4 blocks to tif stacks with `convert_for_training.py`
 - upload the resulting folder to your google drive so it can be loaded in the zero cost notebook for training and validation
-- open the [3D U-Net zero cost notebook](https://colab.research.google.com/github/HenriquesLab/ZeroCostDL4Mic/blob/master/Colab_notebooks/BioImage.io%20notebooks/U-Net_3D_ZeroCostDL4Mic_BioImageModelZoo_export.ipynb) in google colab
+- open the [3D U-Net zero cost notebook](https://colab.research.google.com/github/HenriquesLab/ZeroCostDL4Mic/blob/master/Colab_notebooks/U-Net_3D_ZeroCostDL4Mic.ipynb) in google colab
 - load the [initial model](https://bioimage.io/#/?id=10.5281%2Fzenodo.5749843) and the training data from your google drive in the notebook and fine-tune the model for 15 iterations
 - the fine-tuned model can be exported from the notebook, it's also available on bioimage.io: https://bioimage.io/#/?id=10.5281%2Fzenodo.6348728 
 
