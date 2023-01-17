@@ -32,8 +32,8 @@ See the screenshots below for prediction and multicut results in ilastik.
 - convert the raw data and segmentations for the 4 blocks to tif stacks with `convert_for_training.py`
 - upload the resulting folder to your google drive so it can be loaded in the zero cost notebook for training and validation
 - open the [3D U-Net zero cost notebook](https://colab.research.google.com/github/HenriquesLab/ZeroCostDL4Mic/blob/master/Colab_notebooks/U-Net_3D_ZeroCostDL4Mic.ipynb) in google colab
-- load the [initial model](https://bioimage.io/#/?id=10.5281%2Fzenodo.5749843) and the training data from your google drive in the notebook and fine-tune the model for 15 iterations
-- the fine-tuned model can be exported from the notebook, it's also available on bioimage.io: https://bioimage.io/#/?id=10.5281%2Fzenodo.6348728 
+- load the [initial model](https://bioimage.io/#/?partner=zero&type=model&id=10.5281%2Fzenodo.5749843) and the training data from your google drive in the notebook and fine-tune the model for 15 iterations
+- the fine-tuned model can be exported from the notebook, it's also available on bioimage.io: https://bioimage.io/#/?partner=zero&type=model&id=10.5281%2Fzenodo.6348728 
 
 The fine-tuning significantly increses the model's performance for the leaf data, see a screenhot for a slice of the leaf raw data (left), predictions from the initial model (middle) and fine-tuned predictions (right) below. (On data not part of the training dataset.)
 
