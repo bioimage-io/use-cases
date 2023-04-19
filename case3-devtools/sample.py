@@ -4,14 +4,14 @@ import napari
 
 def segment_cells(image):
     nucleus_model = bioimageio.core.load_resource_description(
-        "10.5281/zenodo.6200999"
+        "conscientious-seashell"
     )
     with bioimageio.create_prediction_pipeline(nucleus_model) as pp:
         nucleus_predictions = pp(image)
     nuclei = label(nucleus_predictions > 0.5)
 
     membrane_model = bioimageio.core.load_resource_description(
-        "10.5281/zenodo.6200635"
+        "loyal-parrot"
     )
     with bioimageio.create_prediction_pipeline(membranes_model) as pp:
         membranes = pp(image)
@@ -22,7 +22,7 @@ def segment_cells(image):
 
 def classify_cells(image, cells):
     classification_model = bioimageio.core.load_resource_description(
-        "10.5281/zenodo.5911832"
+        "straightforward-crocodile"
     )
 
     classes = []
