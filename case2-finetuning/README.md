@@ -23,9 +23,9 @@ TODO: describe training in zerocost (@esgomezm)
 Integration with the multicut workflow enables cell segmentation based on the boundary predictions and allows to correct errors in the network prediction (that happen because of application to a different data modality) to be fixed by training an edge classifier.
 See the screenshots below for prediction and multicut results in ilastik.
 
-<img src="images/ilastik-prediction.png" alt="drawing" width="800"/>
-<img src="images/ilastik-mc.png" alt="drawing" width="800"/>
-<img src="images/ilastik-mc2.png" alt="drawing" width="800"/>
+<img src="https://github.com/bioimage-io/use-cases/blob/main/case2-finetuning/images/ilastik-prediction.png" alt="screenshot" width="800"/>
+<img src="https://github.com/bioimage-io/use-cases/blob/main/case2-finetuning/images/ilastik-mc.png" alt="screenshot" width="800"/>
+<img src="https://github.com/bioimage-io/use-cases/blob/main/case2-finetuning/images/ilastik-mc2.png" alt="screenshot" width="800"/>
 
 ## Retraining in ZeroCost
 
