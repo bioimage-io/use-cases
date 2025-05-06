@@ -1,7 +1,7 @@
 # Use-case 1: Stardist H&E nucleus segmentation
 
-In this use-case, we apply the stardist H&E model pretrained on [MoNuSeg](https://monuseg.grand-challenge.org/Data/) and [TNBC](https://zenodo.org/record/1175282#.X6mwG9so-CN): https://bioimage.io/#/?tags=stardist&id=10.5281%2Fzenodo.6338614.
-We apply it to the [Lizard dataset](https://warwick.ac.uk/fac/cross_fac/tia/data/lizard/) in deepImageJ and in QuPath.
+In this use-case, we apply the [Stardist H&E](https://bioimage.io/#/?tags=stardist&id=10.5281%2Fzenodo.6338614) model from the BioImage Model Zoo which was pretrained on [MoNuSeg](https://monuseg.grand-challenge.org/Data/) and [TNBC](https://zenodo.org/record/1175282#.X6mwG9so-CN) datasets.
+This model is applied to the [Lizard dataset](https://www.kaggle.com/datasets/aadimator/lizard-dataset) in [deepImageJ](https://deepimagej.github.io), in [QuPath](https://qupath.github.io), in [ZeroCostDL4Mic](https://github.com/HenriquesLab/ZeroCostDL4Mic/wiki) and with a Python notebook.
 
 ## Apply stardist model in QuPath and correct segmentation
 
@@ -76,6 +76,15 @@ The example was run using:
 
 <img src="https://github.com/bioimage-io/use-cases/blob/main/case1-stardist/images/zerocost-stardist.png" alt="drawing" width="1200"/>
 
-## Dependencies
+### Dependencies
 
 - zeroCost 1.13
+
+## References
+
+Graham, S., Jahanifar, M., Azam, A., Nimir, M., Tsang, Y. W., Dodd, K., ... & Rajpoot, N. M. (2021). Lizard: a large-scale dataset for colonic nuclear instance segmentation and classification. In Proceedings of the IEEE/CVF international conference on computer vision (pp. 684-693).
+
+Schmidt, U., Weigert, M., Broaddus, C., Myers, G. (2018). Cell Detection with Star-Convex Polygons. In: Frangi, A., Schnabel, J., Davatzikos, C., Alberola-López, C., Fichtinger, G. (eds) Medical Image Computing and Computer Assisted Intervention – MICCAI 2018. MICCAI 2018. Lecture Notes in Computer Science(), vol 11071. Springer, Cham. https://doi.org/10.1007/978-3-030-00934-2_30
+
+M. Weigert, U. Schmidt, R. Haase, K. Sugawara and G. Myers, "Star-convex Polyhedra for 3D Object Detection and Segmentation in Microscopy," 2020 IEEE Winter Conference on Applications of Computer Vision (WACV), Snowmass, CO, USA, 2020, pp. 3655-3662, doi: 10.1109/WACV45572.2020.9093435.
+
