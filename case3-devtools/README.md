@@ -21,5 +21,4 @@ An conda environment that can run the app is defined in `environment.yaml`.
 
 
 ## Usage in imjoy / bioengine
-
-TODO
+The code for this use case is implemented in [this notebook](https://github.com/bioimage-io/use-cases/blob/main/case3-devtools/bioengine-model-runner-hpa-single-cell.ipynb).

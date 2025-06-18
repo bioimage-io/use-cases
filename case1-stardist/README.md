@@ -1,7 +1,7 @@
 # Use-case 1: Stardist H&E nucleus segmentation
 
-In this use-case, we apply the stardist H&E model pretrained on [MoNuSeg](https://monuseg.grand-challenge.org/Data/) and [TNBC](https://zenodo.org/record/1175282#.X6mwG9so-CN): https://bioimage.io/#/?tags=stardist&id=10.5281%2Fzenodo.6338614.
-We apply it to the [Lizard dataset](https://warwick.ac.uk/fac/cross_fac/tia/data/lizard/) in deepImageJ and in QuPath.
+In this use-case, we apply the [Stardist H&E](https://bioimage.io/#/?tags=stardist&id=10.5281%2Fzenodo.6338614) model from the BioImage Model Zoo which was pretrained on [MoNuSeg](https://monuseg.grand-challenge.org/Data/) and [TNBC](https://zenodo.org/record/1175282#.X6mwG9so-CN) datasets.
+This model is applied to the [Lizard dataset](https://www.kaggle.com/datasets/aadimator/lizard-dataset) in [deepImageJ](https://deepimagej.github.io), in [QuPath](https://qupath.github.io), in [ZeroCostDL4Mic](https://github.com/HenriquesLab/ZeroCostDL4Mic/wiki) and with a Python notebook.
 
 ## Apply stardist model in QuPath and correct segmentation
 
@@ -34,25 +34,24 @@ And images of application in QuPath:
 
 ## Apply the model in deepImageJ
 
-- Open a lizard image in Fiji
-- Resize it to twice the size to match the resolution of the pre-trained model (`Image->Adjust->Size...`)
-- Run the model in DeepImageJ
-    - Install the model via `DeepImageJ Install Model`
-    - Apply the model via `DeepImageJ Run`
-    - This will result in the intermediate stardist predictions, we still need to apply stardist postprocessing to get the segmentation
-- Apply stardist post-processing
-    - Make sure the stardist plugin is installed (`Help->Update->Manage Update Sites->StarDist`)
-    - Apply the postprocessing macro: `Plugns->Macros->Run` then select `stardist_postprocessing.ijm` from `he-model-pretrained/bioimageio`
+- Download the image from Kaggle from the Lizard Dataset. This use case in deepImageJ has been done using `Lizard_Images1 > consep_2.png`.
+- Run the model with DeepImageJ
+    - Go to `Plugins > deepImageJ > StarDist`.
+    - Select the model "StarDist H&E Nuclei Segmentation" from the drop down menu and click on Install. 
+    - Adjust the Probability Threshold to a 0,40. You can try different thresholds depending on the number of objects that you want to detect.  
+    - Apply the model by clicking `Run`.
+    - This will result in the stardist predictions. You can change the lookup table for a better visualization of the segmented nuclei.
+
+See a screenshot of the deepImageJ StarDist interface:
+<img src="https://github.com/bioimage-io/use-cases/blob/main/case1-stardist/images/deepimagej_stardist-interface.png" alt="drawing" width="1200"/>
 
 See the result of stardist applied in deepImageJ
 <img src="https://github.com/bioimage-io/use-cases/blob/main/case1-stardist/images/deepimagej_stardist.png" alt="drawing" width="1200"/>
 
 ### Dependencies
-
 The example was run using:
-- Fiji 2.3.0
-- DeepImageJ 2.1.15
-- StarDist Fiji 0.8.1 (required for the stardist post-processing)
+- Fiji 2.16.0
+- DeepImageJ 3.1.0
 
 
 ## Apply the model in stardist python
@@ -76,6 +75,15 @@ The example was run using:
 
 <img src="https://github.com/bioimage-io/use-cases/blob/main/case1-stardist/images/zerocost-stardist.png" alt="drawing" width="1200"/>
 
-## Dependencies
+### Dependencies
 
 - zeroCost 1.13
+
+## References
+
+Graham, S., Jahanifar, M., Azam, A., Nimir, M., Tsang, Y. W., Dodd, K., ... & Rajpoot, N. M. (2021). Lizard: a large-scale dataset for colonic nuclear instance segmentation and classification. In Proceedings of the IEEE/CVF international conference on computer vision (pp. 684-693).
+
+Schmidt, U., Weigert, M., Broaddus, C., Myers, G. (2018). Cell Detection with Star-Convex Polygons. In: Frangi, A., Schnabel, J., Davatzikos, C., Alberola-López, C., Fichtinger, G. (eds) Medical Image Computing and Computer Assisted Intervention – MICCAI 2018. MICCAI 2018. Lecture Notes in Computer Science(), vol 11071. Springer, Cham. https://doi.org/10.1007/978-3-030-00934-2_30
+
+M. Weigert, U. Schmidt, R. Haase, K. Sugawara and G. Myers, "Star-convex Polyhedra for 3D Object Detection and Segmentation in Microscopy," 2020 IEEE Winter Conference on Applications of Computer Vision (WACV), Snowmass, CO, USA, 2020, pp. 3655-3662, doi: 10.1109/WACV45572.2020.9093435.
+
