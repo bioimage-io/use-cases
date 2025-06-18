@@ -43,7 +43,7 @@ And images of application in QuPath:
     - This will result in the stardist predictions. You can change the lookup table for a better visualization of the segmented nuclei.
 
 See a screenshot of the deepImageJ StarDist interface:
-<img src="https://github.com/bioimage-io/use-cases/blob/main/case1-stardist/images/deepimagej_stardist-interface.png" alt="drawing" width="1200"/>
+<img src="https://github.com/bioimage-io/use-cases/blob/main/case1-stardist/images/deepimagej-stardist-interface.png" alt="drawing" width="1200"/>
 
 See the result of stardist applied in deepImageJ
 <img src="https://github.com/bioimage-io/use-cases/blob/main/case1-stardist/images/deepimagej_stardist.png" alt="drawing" width="1200"/>
