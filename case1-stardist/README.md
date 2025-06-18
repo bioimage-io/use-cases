@@ -34,25 +34,24 @@ And images of application in QuPath:
 
 ## Apply the model in deepImageJ
 
-- Open a lizard image in Fiji
-- Resize it to twice the size to match the resolution of the pre-trained model (`Image->Adjust->Size...`)
-- Run the model in DeepImageJ
-    - Install the model via `DeepImageJ Install Model`
-    - Apply the model via `DeepImageJ Run`
-    - This will result in the intermediate stardist predictions, we still need to apply stardist postprocessing to get the segmentation
-- Apply stardist post-processing
-    - Make sure the stardist plugin is installed (`Help->Update->Manage Update Sites->StarDist`)
-    - Apply the postprocessing macro: `Plugns->Macros->Run` then select `stardist_postprocessing.ijm` from `he-model-pretrained/bioimageio`
+- Download the image from Kaggle from the Lizard Dataset. This use case in deepImageJ has been done using `Lizard_Images1 > consep_2.png`.
+- Run the model with DeepImageJ
+    - Go to `Plugins > deepImageJ > StarDist`.
+    - Select the model "StarDist H&E Nuclei Segmentation" from the drop down menu and click on Install. 
+    - Adjust the Probability Threshold to a 0,40. You can try different thresholds depending on the number of objects that you want to detect.  
+    - Apply the model by clicking `Run`.
+    - This will result in the stardist predictions. You can change the lookup table for a better visualization of the segmented nuclei.
+
+See a screenshot of the deepImageJ StarDist interface:
+<img src="https://github.com/bioimage-io/use-cases/blob/main/case1-stardist/images/deepimagej_stardist-interface.png" alt="drawing" width="1200"/>
 
 See the result of stardist applied in deepImageJ
 <img src="https://github.com/bioimage-io/use-cases/blob/main/case1-stardist/images/deepimagej_stardist.png" alt="drawing" width="1200"/>
 
 ### Dependencies
-
 The example was run using:
-- Fiji 2.3.0
-- DeepImageJ 2.1.15
-- StarDist Fiji 0.8.1 (required for the stardist post-processing)
+- Fiji 2.16.0
+- DeepImageJ 3.1.0
 
 
 ## Apply the model in stardist python
