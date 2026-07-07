@@ -1,13 +1,6 @@
 # Use-case 2: 3D U-Net for cell-segmentation in light microscopy
 
-## Initial training in ZeroCost (option A) or BiaPy (option B)
-
-### Option A) ZeroCost
-
-TODO: describe training in zerocost (@esgomezm)
-
-
-### Option B) BiaPy
+## Initial training in BiaPy
 
 To begin the initial training using [BiaPy](https://biapyx.github.io/), you will need to follow the steps outlined below. In this tutorial, we will run a **semantic segmentation workflow with BiaPy** through the command line. We chose this option because the dataset used in this tutorial is relatively large, and running on Colab may lead to **memory limitations** or **restricted training time**. Using the command line ensures more flexibility and avoids these issues.
 
@@ -137,7 +130,7 @@ For reference, we have already exported and published the model from this tutori
 
 ## Application in ilastik
 
-- Download the model with tensorflow weights for ilastik from: https://bioimage.io/#/?id=10.5281%2Fzenodo.5749843
+- Download the model with tensorflow weights for ilastik from: [https://bioimage.io/#/artifacts/dazzling-blowfish](https://bioimage.io/#/artifacts/dazzling-blowfish)
 - Download the Arabidopsis atlas data (different from the model training data!) from https://osf.io/fzr56/ (leaf)
 - Crop the data and convert it to hdf5 with `to_h5.py` (could also use the ilastik data conversion workflow)
 - ilastik neural network classification ([unet-prediction.ilp](TODO upload somewhere else, this is too large for GH))
