@@ -11,7 +11,7 @@ To begin the initial training using [BiaPy](https://biapyx.github.io/), you will
   - [Conda environments](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html) (recommended for most users)  
   - [Python virtual environments (venv)](https://docs.python.org/3/library/venv.html) (lightweight alternative)  
  
-- Download the dataset provided in this tutorial and unzip it.  
+- Download the Ovules dataset from [BioImageArchive](https://beta.bioimagearchive.org/bioimage-archive/study/S-BIAD1392).  
 - Ensure your GPU drivers and CUDA environment (if using GPU) are correctly configured. You can verify it as follows:
 
   ```
@@ -25,7 +25,7 @@ To begin the initial training using [BiaPy](https://biapyx.github.io/), you will
 ## Step 1: Download the Configuration File
 We provide a prepared YAML configuration file as a template. Download it from the following link:  
 
-👉 [Download ovules.yaml](https://drive.google.com/file/d/1oyDCqtVHsTri9bgJ-LU8OyPRSLz4L4UF/view?usp=sharing)  
+👉 [Download ovules.yaml](https://drive.google.com/file/d/1oyDCqtVHsTri9bgJ-LU8OyPRSLz4L4UF/view?usp=sharing)  #TODO: update link
 
 Save it to your working directory (e.g., `~/biapy_project/config.yaml`).  
 
