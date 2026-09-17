@@ -69,21 +69,6 @@ The example was run using:
 
 - stardist python 0.8.3
 
-
-## Apply the model in zero-cost
-
-- Open the stardist 2d notebook: https://colab.research.google.com/github/HenriquesLab/ZeroCostDL4Mic/blob/master/Colab_notebooks/StarDist_2D_ZeroCostDL4Mic.ipynb
-- Start the notebook and go to `Loading weights from a pre-trained notebook`
-    - Select `pretrained_model_choice: BioImage Model Zoo`
-    - Enter the doi (10.5281/zenodo.6338614) in `bioimageio_model`
-- Go to `Error mapping and quality metrics estimation` to run the model on data from your google drive
-
-<img src="https://github.com/bioimage-io/use-cases/blob/main/case1-stardist/images/zerocost-stardist.png" alt="drawing" width="1200"/>
-
-### Dependencies
-
-- zeroCost 1.13
-
 ## References
 
 Graham, S., Jahanifar, M., Azam, A., Nimir, M., Tsang, Y. W., Dodd, K., ... & Rajpoot, N. M. (2021). Lizard: a large-scale dataset for colonic nuclear instance segmentation and classification. In Proceedings of the IEEE/CVF international conference on computer vision (pp. 684-693).
